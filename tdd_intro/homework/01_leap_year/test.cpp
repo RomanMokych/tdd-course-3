@@ -13,3 +13,33 @@ If your language provides a method in the standard library that does this look-u
 */
 
 #include <gtest/gtest.h>
+
+bool is_multiple(int number, int base)
+{
+    return number % base == 0;
+}
+
+bool is_leap_year(int year)
+{
+    return (is_multiple(year, 4) && !is_multiple(year, 100)) || is_multiple(year, 400);
+}
+
+TEST(is_leap_year, returns_true_for_4)
+{
+    EXPECT_TRUE(is_leap_year(4));
+}
+
+TEST(is_leap_year, returns_false_for_5)
+{
+    EXPECT_FALSE(is_leap_year(5));
+}
+
+TEST(is_leap_year, returns_false_for_100)
+{
+    EXPECT_FALSE(is_leap_year(100));
+}
+
+TEST(is_leap_year, returns_true_for_400)
+{
+    EXPECT_TRUE(is_leap_year(400));
+}
