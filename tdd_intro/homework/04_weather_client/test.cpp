@@ -47,6 +47,8 @@ IMPORTANT:
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 
+#include <cmath>
+
 struct Weather
 {
     short temperature = 0;
