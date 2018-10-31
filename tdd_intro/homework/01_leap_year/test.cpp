@@ -21,7 +21,22 @@ bool is_multiple(int number, int base)
 
 bool is_leap_year(int year)
 {
-    return (is_multiple(year, 4) && !is_multiple(year, 100)) || is_multiple(year, 400);
+    if (is_multiple(year, 400))
+    {
+        return true;
+    }
+
+    if (is_multiple(year, 100))
+    {
+        return false;
+    }
+
+    if (is_multiple(year, 4))
+    {
+        return true;
+    }
+
+    return false;
 }
 
 TEST(is_leap_year, returns_true_for_4)
