@@ -23,8 +23,17 @@ If your language provides a method in the standard library to perform the conver
 
 int IntFromTernaryNumberString(const std::string& ternaryNumberString)
 {
+    int result = 0;
+
     size_t power = ternaryNumberString.size() - 1;
-    return (ternaryNumberString.front() - '0') * std::pow(3, power);
+    result += (ternaryNumberString.front() - '0') * std::pow(3, power);
+
+    if (ternaryNumberString.size() > 1)
+    {
+        result += (ternaryNumberString.back() - '0');
+    }
+
+    return result;
 }
 
 TEST(IntFromTernaryNumberString, one)
