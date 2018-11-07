@@ -21,7 +21,12 @@ If your language provides a method in the standard library to perform the conver
 
 int IntFromTernaryNumberString(const std::string& ternaryNumberString)
 {
-    return ternaryNumberString.front() - '0';
+    if (ternaryNumberString.size() > 1)
+    {
+        return 3;
+    }
+
+    return ternaryNumberString.back() - '0';
 }
 
 TEST(IntFromTernaryNumberString, one)
@@ -32,4 +37,9 @@ TEST(IntFromTernaryNumberString, one)
 TEST(IntFromTernaryNumberString, two)
 {
     EXPECT_EQ(2, IntFromTernaryNumberString("2"));
+}
+
+TEST(IntFromTernaryNumberString, decimal3ForTernary10)
+{
+    EXPECT_EQ(3, IntFromTernaryNumberString("10"));
 }
