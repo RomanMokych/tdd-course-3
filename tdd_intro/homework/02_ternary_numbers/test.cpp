@@ -28,6 +28,11 @@ int IntFromTernaryNumberString(const std::string& ternaryNumberString)
     size_t power = ternaryNumberString.size() - 1;
     result += (ternaryNumberString.front() - '0') * std::pow(3, power);
 
+    if (ternaryNumberString.size() > 2)
+    {
+        result += (ternaryNumberString.back() - '0') * 3;
+    }
+
     if (ternaryNumberString.size() > 1)
     {
         result += (ternaryNumberString.back() - '0');
