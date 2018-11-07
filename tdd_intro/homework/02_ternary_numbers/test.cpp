@@ -76,6 +76,8 @@ TEST(IntFromTernaryNumberString, decimal13ForTernary111)
 TEST(IntFromTernaryNumberString, zeroForInvalidTernary)
 {
     EXPECT_EQ(0, IntFromTernaryNumberString("3"));
+    EXPECT_EQ(0, IntFromTernaryNumberString("13"));
+    EXPECT_EQ(0, IntFromTernaryNumberString("."));
 }
 
 TEST(IntFromTernaryNumberString, acceptance)
