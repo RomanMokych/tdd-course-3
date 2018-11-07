@@ -26,7 +26,7 @@ int IntFromTernaryNumberString(const std::string& ternaryNumberString)
         return (ternaryNumberString.front() - '0') * 3;
     }
 
-    return ternaryNumberString.back() - '0';
+    return ternaryNumberString.front() - '0';
 }
 
 TEST(IntFromTernaryNumberString, one)
@@ -48,3 +48,9 @@ TEST(IntFromTernaryNumberString, decimal6ForTernary20)
 {
     EXPECT_EQ(6, IntFromTernaryNumberString("20"));
 }
+
+TEST(IntFromTernaryNumberString, decimal9ForTernary100)
+{
+    EXPECT_EQ(9, IntFromTernaryNumberString("100"));
+}
+
