@@ -28,3 +28,8 @@ TEST(IntFromTernaryNumberString, one)
 {
     EXPECT_EQ(1, IntFromTernaryNumberString("1"));
 }
+
+TEST(IntFromTernaryNumberString, two)
+{
+    EXPECT_EQ(2, IntFromTernaryNumberString("2"));
+}
