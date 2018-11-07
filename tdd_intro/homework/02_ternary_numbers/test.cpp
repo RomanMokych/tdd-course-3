@@ -21,9 +21,9 @@ If your language provides a method in the standard library to perform the conver
 
 int IntFromTernaryNumberString(const std::string& ternaryNumberString)
 {
-    if (ternaryNumberString.size() > 1)
+    if (ternaryNumberString.size() == 2)
     {
-        return 3;
+        return (ternaryNumberString.front() - '0') * 3;
     }
 
     return ternaryNumberString.back() - '0';
