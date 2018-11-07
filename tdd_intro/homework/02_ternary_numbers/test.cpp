@@ -22,10 +22,15 @@ If your language provides a method in the standard library to perform the conver
 
 
 int IntFromTernaryNumberString(const std::string& ternaryNumberString)
-{
+{    
     int result = 0;
     for (size_t i = 0; i < ternaryNumberString.size(); ++i)
     {
+        if (ternaryNumberString[i] < '0' || ternaryNumberString[i] > '2')
+        {
+            return 0;
+        }
+
         size_t power = ternaryNumberString.size() - i - 1;
         result += (ternaryNumberString[i] - '0') * std::pow(3, power);
     }
