@@ -21,7 +21,7 @@ If your language provides a method in the standard library to perform the conver
 
 int IntFromTernaryNumberString(const std::string& ternaryNumberString)
 {
-    return 0;
+    return 1;
 }
 
 TEST(IntFromTernaryNumberString, one)
