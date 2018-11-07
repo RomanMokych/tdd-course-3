@@ -18,20 +18,13 @@ If your language provides a method in the standard library to perform the conver
 */
 
 #include <gtest/gtest.h>
+#include <cmath>
+
 
 int IntFromTernaryNumberString(const std::string& ternaryNumberString)
 {
-    if (ternaryNumberString.size() == 3)
-    {
-        return (ternaryNumberString.front() - '0') * 3 * 3;
-    }
-
-    if (ternaryNumberString.size() == 2)
-    {
-        return (ternaryNumberString.front() - '0') * 3;
-    }
-
-    return ternaryNumberString.front() - '0';
+    size_t power = ternaryNumberString.size() - 1;
+    return (ternaryNumberString.front() - '0') * std::pow(3, power);
 }
 
 TEST(IntFromTernaryNumberString, one)
