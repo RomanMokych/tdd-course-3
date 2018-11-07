@@ -43,3 +43,8 @@ TEST(IntFromTernaryNumberString, decimal3ForTernary10)
 {
     EXPECT_EQ(3, IntFromTernaryNumberString("10"));
 }
+
+TEST(IntFromTernaryNumberString, decimal6ForTernary20)
+{
+    EXPECT_EQ(6, IntFromTernaryNumberString("20"));
+}
