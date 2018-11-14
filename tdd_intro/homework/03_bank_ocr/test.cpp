@@ -125,3 +125,9 @@ TEST(SplitStringForLines, ThreeLinesWithTwoDelimiters)
     std::vector<std::string> lines = {"a", "b", "c"};
     EXPECT_EQ(lines, SplitStringForLines("a\nb\nc"));
 }
+
+TEST(SplitStringForLines, OneLineForEmptyLine)
+{
+    std::vector<std::string> lines = {""};
+    EXPECT_EQ(lines, SplitStringForLines(""));
+}
