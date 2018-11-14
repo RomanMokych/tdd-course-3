@@ -183,3 +183,20 @@ TEST(ExtractDigitsFromEntity, TwoDigitsExtraction)
                                               "| |  |\n"
                                               "|_|  |\n"));
 }
+
+TEST(ExtractDigitsFromEntity, ThreeDigitsExtraction)
+{
+    std::vector<std::string> digits = {" _ "
+                                       "| |"
+                                       "|_|",
+                                       "   "
+                                       "  |"
+                                       "  |",
+                                       " _ "
+                                       " _|"
+                                       "|_ ",};
+
+    EXPECT_EQ(digits, ExtractDigitsFromEntity(" _     _ \n"
+                                              "| |  | _|\n"
+                                              "|_|  ||_ \n"));
+}
