@@ -87,6 +87,9 @@ Example input and output
 #include <gtest/gtest.h>
 #include <string>
 
+const size_t kCharsPerDigit = 3;
+const size_t kLinesPerEntity = 3;
+
 std::vector<std::string> SplitStringForLines(const std::string& string)
 {
     std::vector<std::string> lines;
@@ -111,28 +114,28 @@ std::vector<std::string> SplitStringForLines(const std::string& string)
 std::vector<std::string> ExtractDigitsFromEntity(const std::string& entity)
 {
     std::vector<std::string> lines = SplitStringForLines(entity);
-    if (lines.size() != 4)
+    if (lines.size() != kLinesPerEntity + 1) //1 for empty line in the end
     {
         throw std::runtime_error("Entity format is wrong. Not enough lines.");
     }
 
-    lines.resize(3);
+    lines.resize(kLinesPerEntity);
 
     for (auto& line: lines)
     {
-        if (line.size() % 3 != 0)
+        if (line.size() % kCharsPerDigit != 0)
         {
             throw std::runtime_error("Entity format is wrong. Too small line.");
         }
     }
 
     std::vector<std::string> digits;
-    for (size_t i = 0; i < lines[0].size(); i += 3)
+    for (size_t i = 0; i < lines[0].size(); i += kCharsPerDigit)
     {
         std::string digit;
         for (auto& line: lines)
         {
-            digit += line.substr(i, 3);
+            digit += line.substr(i, kCharsPerDigit);
         }
 
         digits.push_back(digit);
