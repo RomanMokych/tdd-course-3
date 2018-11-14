@@ -108,6 +108,19 @@ std::vector<std::string> SplitStringForLines(const std::string& string)
     return lines;
 }
 
+std::vector<std::string> ExtractDigitsFromEntity(const std::string& entity)
+{
+    std::vector<std::string> lines = SplitStringForLines(entity);
+
+    std::string digit;
+
+    digit += lines.at(0);
+    digit += lines.at(1);
+    digit += lines.at(2);
+
+    return {digit};
+}
+
 TEST(SplitStringForLines, OneLineWithoutDelimiters)
 {
     std::vector<std::string> lines = {"a"};
@@ -130,4 +143,21 @@ TEST(SplitStringForLines, OneLineForEmptyLine)
 {
     std::vector<std::string> lines = {""};
     EXPECT_EQ(lines, SplitStringForLines(""));
+}
+
+TEST(SplitStringForLines, TwoEmptyLinesForLineOnlyWithDelimiters)
+{
+    std::vector<std::string> lines = {"", ""};
+    EXPECT_EQ(lines, SplitStringForLines("\n"));
+}
+
+TEST(ExtractDigitsFromEntity, OneDigitExtraction)
+{
+    std::vector<std::string> digits = {" _ "
+                                       "| |"
+                                       "|_|"};
+
+    EXPECT_EQ(digits, ExtractDigitsFromEntity(" _ \n"
+                                              "| |\n"
+                                              "|_|\n"));
 }
