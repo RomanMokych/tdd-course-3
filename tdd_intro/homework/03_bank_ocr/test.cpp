@@ -89,28 +89,20 @@ Example input and output
 
 std::vector<std::string> SplitStringForLines(const std::string& string)
 {
-    std::string mutableString = string;
-
-    size_t newLinePos = mutableString.find("\n");
-    if (newLinePos == std::string::npos)
-    {
-        return {mutableString};
-    }
-
     std::vector<std::string> lines;
-    lines.push_back(mutableString.substr(0, newLinePos));
 
-    mutableString = mutableString.substr(newLinePos + 1);
-
-    newLinePos = mutableString.find("\n");
-    lines.push_back(mutableString.substr(0, newLinePos));
-
-    if (newLinePos != std::string::npos)
+    std::string mutableString = string;
+    while (true)
     {
-        mutableString = mutableString.substr(newLinePos + 1);
-
-        newLinePos = mutableString.find("\n");
+        size_t newLinePos = mutableString.find("\n");
         lines.push_back(mutableString.substr(0, newLinePos));
+
+        if (newLinePos == std::string::npos)
+        {
+            break;
+        }
+
+        mutableString = mutableString.substr(newLinePos + 1);
     }
 
     return lines;
