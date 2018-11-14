@@ -160,7 +160,13 @@ std::string ParseNumbersFromEntity(const std::string& entity)
                                                            " _|"
                                                            " _|", "3"}};
 
-    return numberFromDigit[digits[0]];
+    std::string numbers;
+    for (auto& digit: digits)
+    {
+        numbers += numberFromDigit[digit];
+    }
+
+    return numbers;
 }
 
 TEST(SplitStringForLines, OneLineWithoutDelimiters)
@@ -284,4 +290,11 @@ TEST(ParseNumbersFromEntity, ThreeFromEntity)
     EXPECT_EQ("3", ParseNumbersFromEntity(" _ \n"
                                           " _|\n"
                                           " _|\n"));
+}
+
+TEST(ParseNumbersFromEntity, ServeralNumbersFromEntity)
+{
+    EXPECT_EQ("0123", ParseNumbersFromEntity(" _     _  _ \n"
+                                             "| |  | _| _|\n"
+                                             "|_|  ||_  _|\n"));
 }
