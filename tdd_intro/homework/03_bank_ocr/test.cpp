@@ -113,10 +113,10 @@ std::vector<std::string> ExtractDigitsFromEntity(const std::string& entity)
     std::vector<std::string> lines = SplitStringForLines(entity);
 
     std::string digit;
-
-    digit += lines.at(0);
-    digit += lines.at(1);
-    digit += lines.at(2);
+    for (auto& line: lines)
+    {
+        digit += line;
+    }
 
     return {digit};
 }
