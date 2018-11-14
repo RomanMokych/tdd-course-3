@@ -111,6 +111,11 @@ std::vector<std::string> SplitStringForLines(const std::string& string)
 std::vector<std::string> ExtractDigitsFromEntity(const std::string& entity)
 {
     std::vector<std::string> lines = SplitStringForLines(entity);
+    if (lines.size() != 4)
+    {
+        throw std::runtime_error("Entity format is wrong. Not enough lines.");
+    }
+
     lines.resize(3);
 
     std::vector<std::string> digits;
@@ -207,4 +212,11 @@ TEST(ExtractDigitsFromEntity, NoDigitsForEmptyEntity)
     EXPECT_EQ(digits, ExtractDigitsFromEntity("\n"
                                               "\n"
                                               "\n"));
+}
+
+TEST(ExtractDigitsFromEntity, ExceptionForNotEnoughLines)
+{
+    EXPECT_THROW(ExtractDigitsFromEntity("   \n"
+                                         "  |\n"),
+                 std::runtime_error);
 }
