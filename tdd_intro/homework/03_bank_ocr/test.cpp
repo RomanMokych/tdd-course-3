@@ -89,6 +89,12 @@ Example input and output
 
 std::vector<std::string> SplitStringForLines(const std::string& string)
 {
+    size_t newLinePos = string.find("\n");
+    if (newLinePos != std::string::npos)
+    {
+        return {string.substr(0, newLinePos), string.substr(newLinePos + 1)};
+    }
+
     return {string};
 }
 
@@ -96,4 +102,10 @@ TEST(SplitStringForLines, OneLineWithoutDelimiters)
 {
     std::vector<std::string> lines = {"a"};
     EXPECT_EQ(lines, SplitStringForLines("a"));
+}
+
+TEST(SplitStringForLines, TwoLineWithOneDelimiter)
+{
+    std::vector<std::string> lines = {"a", "b"};
+    EXPECT_EQ(lines, SplitStringForLines("a\nb"));
 }
