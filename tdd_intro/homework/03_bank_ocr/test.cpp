@@ -118,8 +118,15 @@ std::vector<std::string> ExtractDigitsFromEntity(const std::string& entity)
 
     lines.resize(3);
 
-    std::vector<std::string> digits;
+    for (auto& line: lines)
+    {
+        if (line.size() % 3 != 0)
+        {
+            throw std::runtime_error("Entity format is wrong. Too small line.");
+        }
+    }
 
+    std::vector<std::string> digits;
     for (size_t i = 0; i < lines[0].size(); i += 3)
     {
         std::string digit;
@@ -218,5 +225,13 @@ TEST(ExtractDigitsFromEntity, ExceptionForNotEnoughLines)
 {
     EXPECT_THROW(ExtractDigitsFromEntity("   \n"
                                          "  |\n"),
+                 std::runtime_error);
+}
+
+TEST(ExtractDigitsFromEntity, ExceptionForTooSmallLines)
+{
+    EXPECT_THROW(ExtractDigitsFromEntity("||\n"
+                                         "|||\n"
+                                         "|||\n"),
                  std::runtime_error);
 }
