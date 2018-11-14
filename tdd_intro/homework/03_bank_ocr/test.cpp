@@ -144,6 +144,16 @@ std::vector<std::string> ExtractDigitsFromEntity(const std::string& entity)
     return digits;
 }
 
+std::string ParseNumbersFromEntity(const std::string& entity)
+{
+    std::vector<std::string> digits = ExtractDigitsFromEntity(entity);
+    std::map<std::string, std::string> numberFromDigit = {{" _ "
+                                                           "| |"
+                                                           "|_|", "0"}};
+
+    return numberFromDigit[digits[0]];
+}
+
 TEST(SplitStringForLines, OneLineWithoutDelimiters)
 {
     std::vector<std::string> lines = {"a"};
@@ -237,4 +247,11 @@ TEST(ExtractDigitsFromEntity, ExceptionForTooSmallLines)
                                          "|||\n"
                                          "|||\n"),
                  std::runtime_error);
+}
+
+TEST(ParseNumbersFromEntity, ZeroFromEntity)
+{
+    EXPECT_EQ("0", ParseNumbersFromEntity(" _ \n"
+                                          "| |\n"
+                                          "|_|\n"));
 }
