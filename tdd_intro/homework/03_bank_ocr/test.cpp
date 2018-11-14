@@ -149,7 +149,10 @@ std::string ParseNumbersFromEntity(const std::string& entity)
     std::vector<std::string> digits = ExtractDigitsFromEntity(entity);
     std::map<std::string, std::string> numberFromDigit = {{" _ "
                                                            "| |"
-                                                           "|_|", "0"}};
+                                                           "|_|", "0"},
+                                                          {"   "
+                                                           "  |"
+                                                           "  |", "1"}};
 
     return numberFromDigit[digits[0]];
 }
@@ -254,4 +257,11 @@ TEST(ParseNumbersFromEntity, ZeroFromEntity)
     EXPECT_EQ("0", ParseNumbersFromEntity(" _ \n"
                                           "| |\n"
                                           "|_|\n"));
+}
+
+TEST(ParseNumbersFromEntity, OneFromEntity)
+{
+    EXPECT_EQ("1", ParseNumbersFromEntity("   \n"
+                                          "  |\n"
+                                          "  |\n"));
 }
