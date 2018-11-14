@@ -114,20 +114,13 @@ std::vector<std::string> ExtractDigitsFromEntity(const std::string& entity)
     lines.resize(3);
 
     std::vector<std::string> digits;
-    std::string digit;
-    for (auto& line: lines)
-    {
-        digit += line.substr(0, 3);
-    }
 
-    digits.push_back(digit);
-
-    if (lines[0].size() > 3)
+    for (size_t i = 0; i < lines[0].size(); i += 3)
     {
         std::string digit;
         for (auto& line: lines)
         {
-            digit += line.substr(3, 3);
+            digit += line.substr(i, 3);
         }
 
         digits.push_back(digit);
