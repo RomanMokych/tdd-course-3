@@ -89,13 +89,31 @@ Example input and output
 
 std::vector<std::string> SplitStringForLines(const std::string& string)
 {
-    size_t newLinePos = string.find("\n");
-    if (newLinePos != std::string::npos)
+    std::string mutableString = string;
+
+    size_t newLinePos = mutableString.find("\n");
+    if (newLinePos == std::string::npos)
     {
-        return {string.substr(0, newLinePos), string.substr(newLinePos + 1)};
+        return {mutableString};
     }
 
-    return {string};
+    std::vector<std::string> lines;
+    lines.push_back(mutableString.substr(0, newLinePos));
+
+    mutableString = mutableString.substr(newLinePos + 1);
+
+    newLinePos = mutableString.find("\n");
+    lines.push_back(mutableString.substr(0, newLinePos));
+
+    if (newLinePos != std::string::npos)
+    {
+        mutableString = mutableString.substr(newLinePos + 1);
+
+        newLinePos = mutableString.find("\n");
+        lines.push_back(mutableString.substr(0, newLinePos));
+    }
+
+    return lines;
 }
 
 TEST(SplitStringForLines, OneLineWithoutDelimiters)
@@ -104,8 +122,14 @@ TEST(SplitStringForLines, OneLineWithoutDelimiters)
     EXPECT_EQ(lines, SplitStringForLines("a"));
 }
 
-TEST(SplitStringForLines, TwoLineWithOneDelimiter)
+TEST(SplitStringForLines, TwoLinesWithOneDelimiters)
 {
     std::vector<std::string> lines = {"a", "b"};
     EXPECT_EQ(lines, SplitStringForLines("a\nb"));
+}
+
+TEST(SplitStringForLines, ThreeLinesWithTwoDelimiters)
+{
+    std::vector<std::string> lines = {"a", "b", "c"};
+    EXPECT_EQ(lines, SplitStringForLines("a\nb\nc"));
 }
