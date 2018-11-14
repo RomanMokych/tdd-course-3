@@ -111,14 +111,29 @@ std::vector<std::string> SplitStringForLines(const std::string& string)
 std::vector<std::string> ExtractDigitsFromEntity(const std::string& entity)
 {
     std::vector<std::string> lines = SplitStringForLines(entity);
+    lines.resize(3);
 
+    std::vector<std::string> digits;
     std::string digit;
     for (auto& line: lines)
     {
-        digit += line;
+        digit += line.substr(0, 3);
     }
 
-    return {digit};
+    digits.push_back(digit);
+
+    if (lines[0].size() > 3)
+    {
+        std::string digit;
+        for (auto& line: lines)
+        {
+            digit += line.substr(3, 3);
+        }
+
+        digits.push_back(digit);
+    }
+
+    return digits;
 }
 
 TEST(SplitStringForLines, OneLineWithoutDelimiters)
@@ -160,4 +175,18 @@ TEST(ExtractDigitsFromEntity, OneDigitExtraction)
     EXPECT_EQ(digits, ExtractDigitsFromEntity(" _ \n"
                                               "| |\n"
                                               "|_|\n"));
+}
+
+TEST(ExtractDigitsFromEntity, TwoDigitsExtraction)
+{
+    std::vector<std::string> digits = {" _ "
+                                       "| |"
+                                       "|_|",
+                                       "   "
+                                       "  |"
+                                       "  |"};
+
+    EXPECT_EQ(digits, ExtractDigitsFromEntity(" _    \n"
+                                              "| |  |\n"
+                                              "|_|  |\n"));
 }
