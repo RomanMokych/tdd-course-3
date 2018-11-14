@@ -152,7 +152,13 @@ std::string ParseNumbersFromEntity(const std::string& entity)
                                                            "|_|", "0"},
                                                           {"   "
                                                            "  |"
-                                                           "  |", "1"}};
+                                                           "  |", "1"},
+                                                          {" _ "
+                                                           " _|"
+                                                           "|_ ", "2"},
+                                                          {" _ "
+                                                           " _|"
+                                                           " _|", "3"}};
 
     return numberFromDigit[digits[0]];
 }
@@ -264,4 +270,18 @@ TEST(ParseNumbersFromEntity, OneFromEntity)
     EXPECT_EQ("1", ParseNumbersFromEntity("   \n"
                                           "  |\n"
                                           "  |\n"));
+}
+
+TEST(ParseNumbersFromEntity, TwoFromEntity)
+{
+    EXPECT_EQ("2", ParseNumbersFromEntity(" _ \n"
+                                          " _|\n"
+                                          "|_ \n"));
+}
+
+TEST(ParseNumbersFromEntity, ThreeFromEntity)
+{
+    EXPECT_EQ("3", ParseNumbersFromEntity(" _ \n"
+                                          " _|\n"
+                                          " _|\n"));
 }
