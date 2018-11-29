@@ -75,10 +75,13 @@ TEST(CoffeeMachine, MakeBigCappuccino)
 {
     MockSourceOfIngredients ingridientsSource;
 
-    EXPECT_CALL(ingridientsSource, AddWater(140, 80)).Times(1);
-    EXPECT_CALL(ingridientsSource, AddMilk(140 / 3)).Times(1);
-    EXPECT_CALL(ingridientsSource, AddCoffee(140 / 3)).Times(1);
-    EXPECT_CALL(ingridientsSource, AddMilkFoam(140 / 3)).Times(1);
+    const int cappuccinoTemperature = 80;
+    const int cappuccinoGrams = 140;
+
+    EXPECT_CALL(ingridientsSource, AddWater(cappuccinoGrams, cappuccinoTemperature)).Times(1);
+    EXPECT_CALL(ingridientsSource, AddMilk(cappuccinoGrams / 3)).Times(1);
+    EXPECT_CALL(ingridientsSource, AddCoffee(cappuccinoGrams / 3)).Times(1);
+    EXPECT_CALL(ingridientsSource, AddMilkFoam(cappuccinoGrams / 3)).Times(1);
 
     CoffeeMachine coffeeMachine(ingridientsSource);
 
