@@ -58,7 +58,7 @@ public:
 
     void MakeCappuccino(const CupSize cupSize)
     {
-        const int bigCupGrams = 140;
+        const int bigCupGrams = (cupSize == CupSize::Little ? 100 : 140);
         const int temperature = 80;
 
         m_ingridientsSource.AddWater(bigCupGrams, temperature);
@@ -84,6 +84,21 @@ TEST(CoffeeMachine, MakeBigCappuccino)
     EXPECT_CALL(ingridientsSource, AddMilkFoam(cappuccinoGrams / 3)).Times(1);
 
     CoffeeMachine coffeeMachine(ingridientsSource);
-
     coffeeMachine.MakeCappuccino(CupSize::Big);
+}
+
+TEST(CoffeeMachine, MakeLittleCappuccino)
+{
+    MockSourceOfIngredients ingridientsSource;
+
+    const int cappuchinoTemperature = 80;
+    const int cappuchinoGrams = 100;
+
+    EXPECT_CALL(ingridientsSource, AddWater(cappuchinoGrams, cappuchinoTemperature)).Times(1);
+    EXPECT_CALL(ingridientsSource, AddMilk(cappuchinoGrams / 3)).Times(1);
+    EXPECT_CALL(ingridientsSource, AddCoffee(cappuchinoGrams / 3)).Times(1);
+    EXPECT_CALL(ingridientsSource, AddMilkFoam(cappuchinoGrams / 3)).Times(1);
+
+    CoffeeMachine coffeeMachine(ingridientsSource);
+    coffeeMachine.MakeCappuccino(CupSize::Little);
 }
