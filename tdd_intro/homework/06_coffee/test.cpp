@@ -53,14 +53,19 @@ enum CupSize
 class CoffeeMachine
 {
 public:
-    CoffeeMachine(ISourceOfIngredients& source) : m_source(source)
+    CoffeeMachine(ISourceOfIngredients& source) : m_ingridientsSource(source)
     {}
 
     void MakeCappuccino(const CupSize cupSize)
-    {}
+    {
+        m_ingridientsSource.AddWater(140, 80);
+        m_ingridientsSource.AddMilk(140 / 3);
+        m_ingridientsSource.AddCoffee(140 / 3);
+        m_ingridientsSource.AddMilkFoam(140 / 3);
+    }
 
 private:
-    ISourceOfIngredients& m_source;
+    ISourceOfIngredients& m_ingridientsSource;
 };
 
 TEST(CoffeeMachine, MakeBigCappuccino)
