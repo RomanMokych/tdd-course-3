@@ -145,3 +145,14 @@ TEST(CoffeeMachine, MakeBigLatte)
     CoffeeMachine coffeeMachine(ingridientsSource);
     coffeeMachine.MakeLatte(CupSize::Big);
 }
+
+TEST(CoffeeMachine, MakeLittleLatte)
+{
+    MockSourceOfIngredients ingridientsSource;
+
+    const int grams = 100;
+    ingridientsSource.SetupLatteExpectations(grams);
+
+    CoffeeMachine coffeeMachine(ingridientsSource);
+    coffeeMachine.MakeLatte(CupSize::Little);
+}
