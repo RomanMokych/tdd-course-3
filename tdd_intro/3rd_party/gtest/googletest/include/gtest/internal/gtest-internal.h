@@ -1045,8 +1045,12 @@ void CopyArray(const T* from, size_t size, U* to) {
 // native array it represents.
 // We use 2 different structs to allow non-copyable types to be used, as long
 // as RelationToSourceReference() is passed.
-struct RelationToSourceReference {};
-struct RelationToSourceCopy {};
+struct RelationToSourceReference {
+    RelationToSourceReference() {}
+};
+struct RelationToSourceCopy {
+    RelationToSourceCopy() {}
+};
 
 // Adapts a native array to a read-only STL-style container.  Instead
 // of the complete STL container concept, this adaptor only implements
