@@ -42,6 +42,16 @@ public:
     MOCK_METHOD1(AddMilkFoam, void(int));
     MOCK_METHOD1(AddChocolate, void(int));
     MOCK_METHOD1(AddCream, void(int));
+
+    void SetupCappuchinoExpectations(int grams)
+    {
+        const int cappuccinoTemperature = 80;
+
+        EXPECT_CALL(*this, AddWater(grams, cappuccinoTemperature)).Times(1);
+        EXPECT_CALL(*this, AddMilk(grams / 3)).Times(1);
+        EXPECT_CALL(*this, AddCoffee(grams / 3)).Times(1);
+        EXPECT_CALL(*this, AddMilkFoam(grams / 3)).Times(1);
+    }
 };
 
 enum CupSize
@@ -75,13 +85,8 @@ TEST(CoffeeMachine, MakeBigCappuccino)
 {
     MockSourceOfIngredients ingridientsSource;
 
-    const int cappuccinoTemperature = 80;
-    const int cappuccinoGrams = 140;
-
-    EXPECT_CALL(ingridientsSource, AddWater(cappuccinoGrams, cappuccinoTemperature)).Times(1);
-    EXPECT_CALL(ingridientsSource, AddMilk(cappuccinoGrams / 3)).Times(1);
-    EXPECT_CALL(ingridientsSource, AddCoffee(cappuccinoGrams / 3)).Times(1);
-    EXPECT_CALL(ingridientsSource, AddMilkFoam(cappuccinoGrams / 3)).Times(1);
+    const int cappuchinoGrams = 140;
+    ingridientsSource.SetupCappuchinoExpectations(cappuchinoGrams);
 
     CoffeeMachine coffeeMachine(ingridientsSource);
     coffeeMachine.MakeCappuccino(CupSize::Big);
@@ -91,13 +96,8 @@ TEST(CoffeeMachine, MakeLittleCappuccino)
 {
     MockSourceOfIngredients ingridientsSource;
 
-    const int cappuchinoTemperature = 80;
     const int cappuchinoGrams = 100;
-
-    EXPECT_CALL(ingridientsSource, AddWater(cappuchinoGrams, cappuchinoTemperature)).Times(1);
-    EXPECT_CALL(ingridientsSource, AddMilk(cappuchinoGrams / 3)).Times(1);
-    EXPECT_CALL(ingridientsSource, AddCoffee(cappuchinoGrams / 3)).Times(1);
-    EXPECT_CALL(ingridientsSource, AddMilkFoam(cappuchinoGrams / 3)).Times(1);
+    ingridientsSource.SetupCappuchinoExpectations(cappuchinoGrams);
 
     CoffeeMachine coffeeMachine(ingridientsSource);
     coffeeMachine.MakeCappuccino(CupSize::Little);
