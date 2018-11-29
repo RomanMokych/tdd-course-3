@@ -46,7 +46,7 @@ public:
 
 enum CupSize
 {
-    Normal,
+    Little,
     Big
 };
 
@@ -56,6 +56,23 @@ public:
     CoffeeMachine(ISourceOfIngredients& source) : m_source(source)
     {}
 
+    void MakeCappuccino(const CupSize cupSize)
+    {}
+
 private:
     ISourceOfIngredients& m_source;
 };
+
+TEST(CoffeeMachine, MakeBigCappuccino)
+{
+    MockSourceOfIngredients ingridientsSource;
+
+    EXPECT_CALL(ingridientsSource, AddWater(140, 80)).Times(1);
+    EXPECT_CALL(ingridientsSource, AddMilk(140 / 3)).Times(1);
+    EXPECT_CALL(ingridientsSource, AddCoffee(140 / 3)).Times(1);
+    EXPECT_CALL(ingridientsSource, AddMilkFoam(140 / 3)).Times(1);
+
+    CoffeeMachine coffeeMachine(ingridientsSource);
+
+    coffeeMachine.MakeCappuccino(CupSize::Big);
+}
