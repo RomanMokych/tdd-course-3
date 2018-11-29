@@ -78,7 +78,7 @@ public:
 
     void MakeCappuccino(const CupSize cupSize)
     {
-        const int grams = (cupSize == CupSize::Little ? 100 : 140);
+        const int grams = GramsFromCupSize(cupSize);
         const int temperature = 80;
 
         m_ingridientsSource.AddWater(grams, temperature);
@@ -89,13 +89,24 @@ public:
 
     void MakeLatte(const CupSize cupSize)
     {
-        const int grams = (cupSize == CupSize::Little ? 100 : 140);
+        const int grams = GramsFromCupSize(cupSize);
         const int temperature = 90;
 
         m_ingridientsSource.AddWater(grams, temperature);
         m_ingridientsSource.AddMilk(grams / 4);
         m_ingridientsSource.AddCoffee(grams / 2);
         m_ingridientsSource.AddMilkFoam(grams / 4);
+    }
+
+private:
+    int GramsFromCupSize(const CupSize cupSize)
+    {
+        if (cupSize == CupSize::Little)
+        {
+            return 100;
+        }
+
+        return 140; //for CupSize::Big
     }
 
 private:
