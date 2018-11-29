@@ -58,10 +58,13 @@ public:
 
     void MakeCappuccino(const CupSize cupSize)
     {
-        m_ingridientsSource.AddWater(140, 80);
-        m_ingridientsSource.AddMilk(140 / 3);
-        m_ingridientsSource.AddCoffee(140 / 3);
-        m_ingridientsSource.AddMilkFoam(140 / 3);
+        const int bigCupGrams = 140;
+        const int temperature = 80;
+
+        m_ingridientsSource.AddWater(bigCupGrams, temperature);
+        m_ingridientsSource.AddMilk(bigCupGrams / 3);
+        m_ingridientsSource.AddCoffee(bigCupGrams / 3);
+        m_ingridientsSource.AddMilkFoam(bigCupGrams / 3);
     }
 
 private:
