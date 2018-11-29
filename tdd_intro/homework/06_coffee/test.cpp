@@ -52,6 +52,16 @@ public:
         EXPECT_CALL(*this, AddCoffee(grams / 3)).Times(1);
         EXPECT_CALL(*this, AddMilkFoam(grams / 3)).Times(1);
     }
+
+    void SetupLatteExpectations(int grams)
+    {
+        const int temperature = 90;
+
+        EXPECT_CALL(*this, AddWater(grams, temperature)).Times(1);
+        EXPECT_CALL(*this, AddMilk(grams / 4)).Times(1);
+        EXPECT_CALL(*this, AddCoffee(grams / 2)).Times(1);
+        EXPECT_CALL(*this, AddMilkFoam(grams / 4)).Times(1);
+    }
 };
 
 enum CupSize
@@ -75,6 +85,17 @@ public:
         m_ingridientsSource.AddMilk(bigCupGrams / 3);
         m_ingridientsSource.AddCoffee(bigCupGrams / 3);
         m_ingridientsSource.AddMilkFoam(bigCupGrams / 3);
+    }
+
+    void MakeLatte(const CupSize cupSize)
+    {
+        const int grams = (cupSize == CupSize::Little ? 100 : 140);
+        const int temperature = 90;
+
+        m_ingridientsSource.AddWater(grams, temperature);
+        m_ingridientsSource.AddMilk(grams / 4);
+        m_ingridientsSource.AddCoffee(grams / 2);
+        m_ingridientsSource.AddMilkFoam(grams / 4);
     }
 
 private:
@@ -101,4 +122,15 @@ TEST(CoffeeMachine, MakeLittleCappuccino)
 
     CoffeeMachine coffeeMachine(ingridientsSource);
     coffeeMachine.MakeCappuccino(CupSize::Little);
+}
+
+TEST(CoffeeMachine, MakeBigLatte)
+{
+    MockSourceOfIngredients ingridientsSource;
+
+    const int grams = 140;
+    ingridientsSource.SetupLatteExpectations(grams);
+
+    CoffeeMachine coffeeMachine(ingridientsSource);
+    coffeeMachine.MakeLatte(CupSize::Big);
 }
