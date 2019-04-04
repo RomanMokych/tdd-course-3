@@ -1,4 +1,5 @@
 ﻿#include <gtest/gtest.h>
+#include <gmock/gmock.h>
 
 using namespace testing;
 /*
@@ -38,4 +39,112 @@ Implement chat application, that communicates via TCP sockets.
     * If user runs app with 'me' nickname - error with text "Username me is reserved and can not be used" is displayed and application exits
 */
 
-#include "mocks.h"
+class IConnection{
+public:
+    virtual ~IConnection(){};
+    virtual std::string read() = 0;
+    virtual void write(const std::string& message) = 0;
+};
+
+class MockConnection : public IConnection
+{
+public:
+    MOCK_METHOD1(write, void(const std::string&));
+    MOCK_METHOD0(read, std::string());
+};
+
+const std::string kHandshakeSuffix = ":HELLO!";
+
+void SendNickName(IConnection* connection, const std::string& nickname)
+{
+    connection->write(nickname + kHandshakeSuffix);
+}
+
+std::string ReceiveNickName(IConnection* connection)
+{
+    std::string message = connection->read();
+
+    auto const expectedHandshakeSuffixPos = message.length() - kHandshakeSuffix.length();
+    auto handshakeSuffixPos = message.find(kHandshakeSuffix);
+
+    if (handshakeSuffixPos != expectedHandshakeSuffixPos ||
+            handshakeSuffixPos == 0)
+    {
+        throw std::exception("Wrong handshake message.");
+    }
+
+    return message.substr(0, expectedHandshakeSuffixPos);
+}
+
+std::string ClientHandshake(IConnection* connection, const std::string &nickName)
+{
+    SendNickName(connection, nickName);
+    return ReceiveNickName(connection);
+}
+
+std::string ServerHandshake(IConnection* connection, const std::string &nickName)
+{
+    std::string name = ReceiveNickName(connection);
+    SendNickName(connection, nickName);
+
+    return name;
+}
+
+
+TEST (SendNickname, send_nickname_to_iconnection)
+{
+    MockConnection connect;
+    EXPECT_CALL(connect, write("NickName:HELLO!")).Times(1);
+
+    SendNickName(&connect, "NickName");
+}
+
+TEST (ReceiveNickname, receive_nickname_from_iconnection)
+{
+    MockConnection connect;
+    EXPECT_CALL(connect, read()).WillOnce(Return("Nickname:HELLO!"));
+
+    EXPECT_EQ("Nickname", ReceiveNickName(&connect));
+}
+
+TEST (ReceiveNickname, receive_nickname_without_suffix_fails)
+{
+    MockConnection connect;
+    EXPECT_CALL(connect, read()).WillOnce(Return("Nickname"));
+    EXPECT_THROW(ReceiveNickName(&connect), std::exception);
+}
+
+TEST (ReceiveNickname, receive_nickname_with_suffix_in_wrong_place_fails)
+{
+    MockConnection connect;
+    EXPECT_CALL(connect, read()).WillOnce(Return(":HELLO!Nickname"));
+    EXPECT_THROW(ReceiveNickName(&connect), std::exception);
+}
+
+TEST (ReceiveNickname, receive_nickname_empty_nick)
+{
+    MockConnection connect;
+
+    EXPECT_CALL(connect, read()).WillOnce(Return(":HELLO!"));
+    EXPECT_THROW(ReceiveNickName(&connect), std::exception);
+}
+
+TEST(ClientHandshake, called_write_then_called_read)
+{
+    MockConnection connect;
+    InSequence is;
+    EXPECT_CALL(connect, write("nick:HELLO!")).WillOnce(Return());
+    EXPECT_CALL(connect, read()).WillOnce(Return("bob:HELLO!"));
+
+    EXPECT_EQ("bob", ClientHandshake(&connect, "nick"));
+}
+
+TEST(ServerHandshake, called_read_then_called_write)
+{
+    MockConnection connect;
+    InSequence is;
+    EXPECT_CALL(connect, read()).WillOnce(Return("bob:HELLO!"));
+    EXPECT_CALL(connect, write("nick:HELLO!")).WillOnce(Return());
+
+    EXPECT_EQ("bob", ServerHandshake(&connect, "nick"));
+}
